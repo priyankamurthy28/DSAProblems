@@ -214,6 +214,8 @@ func findMaxProfit(_ prices: [Int]) -> Int {
             
         } else {
             left = right
+            
+            
         }
         
         right += 1
