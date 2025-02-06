@@ -2,7 +2,8 @@
 
 import Foundation
 
-
+// TC for this is n because for the SET is o(1) and for the for loop 0(n)
+//SC is 0(min(n,c) n lenght of string and size of characters
 func longestSubstringWithoutRepeating(_ s: String) -> Int {
     var seen = Set<Character>() // Tracks unique characters in the current window
     var maxLength = 0
@@ -171,3 +172,55 @@ func characterReplacement(_ s: String, _ k: Int) -> Int {
 
     return maxLength
 }
+
+
+
+
+func findLongestSubStringWihtoutRepeating1(_ s: String) -> Int {
+    var maxLenght = 0
+    var left = 0
+    var seen = Set<Character>()
+    var charArray = Array(s)
+    
+    for right in 0..<charArray.count {
+        
+        while(seen.contains(charArray[right])) {
+            seen.remove(charArray[left])
+            left += 1
+        }
+        seen.insert(charArray[right])
+        maxLenght = max(maxLenght, right - left + 1)
+        
+        
+    }
+    return maxLenght
+    
+}
+
+
+findLongestSubStringWihtoutRepeating1("abcabcbb")
+
+func findMaxProfit(_ prices: [Int]) -> Int {
+    
+    var left = 0
+    var right = 1
+    var maxProfit = 0
+    
+    while(right < prices.count) {
+        
+        if prices[left] < prices[right] {
+            var profit = prices[right] - prices[left]
+            maxProfit = max(maxProfit, profit)
+            
+        } else {
+            left = right
+        }
+        
+        right += 1
+    }
+    
+    return maxProfit
+    
+}
+
+findMaxProfit([10,1,5,6,7,1])

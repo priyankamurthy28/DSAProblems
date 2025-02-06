@@ -388,6 +388,145 @@ print(cache.get(4)) // Output: 4
 
 
 
+class ListNode1: Hashable  {
+    
+    var value: Int
+    var next: ListNode1?
+    
+    init(_ value: Int) {
+        
+        self.value = value
+    }
+    
+    func hash(into hasher: inout Hasher) {
+           hasher.combine(ObjectIdentifier(self)) // Use the node's memory address
+       }
+       
+       static func == (lhs: ListNode1, rhs: ListNode1) -> Bool {
+           return lhs === rhs // Compare memory addresses
+       }
+}
+    
+
+
+var head12 = ListNode1(1)
+head12.next = ListNode1(2)
+head12.next?.next = ListNode1(3)
+
+
+func printLinkedList(_ head: ListNode1?) -> ListNode1? {
+    
+var current = head
+    
+    if let node = current {
+        
+        print(node.value, terminator: " -> ")
+        current = node.next
+    }
+    
+    return nil
+    
+}
+
+func reverseLinkListeStack(_ head: ListNode1?) -> ListNode1? {
+//    var stack: [ListNode1] = []
+//
+//    var current: ListNode1? = head
+//
+//     while current != nil {
+//         stack.append(current!)
+//                current = current?.next
+//            }
+//
+//    let newHead = stack.popLast()
+//    var newCurrent = newHead
+//
+//    if !stack.isEmpty {
+//        newCurrent?.next = stack.popLast()
+//        newCurrent = newCurrent?.next
+//
+//    }
+//    newCurrent?.next = nil
+//    return newHead
+    
+    
+    var current = head
+    var prev: ListNode1? = nil
+    while current != nil {
+        var temp = current?.next
+        current?.next = prev
+        prev = current
+        current = temp
+        
+        
+    }
+    return prev
+    
+}
+
+
+func hasCycle12(_ head: ListNode1) -> Bool {
+    
+//    var seen = Set<ListNode1>()
+//
+//    var current: ListNode1? = head
+//
+//    while(current != nil) {
+//
+//        if seen.contains(current!) {
+//            return true
+//        } else {
+//            seen.insert(current!)
+//
+//
+//        }
+//        current = current!.next!
+//
+//
+//    }
+// return false
+    
+    
+    var slow :ListNode1? = head
+    var fast :ListNode1? = head
+    
+    while(fast != nil && fast?.next != nil) {
+        
+        slow = slow?.next
+        fast = fast?.next?.next
+    }
+    if slow == fast {
+        return true
+    }
+    
+    return false
+}
 
 
 
+//func removeNthNode(_ head: ListNode1) -> ListNode1 {
+//
+//
+//    var fast  : ListNode1 = head
+//    var slow: ListNode1 = head
+//   var  n = 2
+//
+//    for i in 0..<n {
+//
+//        fast = fast.next!
+//    }
+//
+//
+//    while(fast?.next != nil ) {
+//
+//        slow = slow?.next
+//        fast = fast?.next
+//
+//
+//    }
+//
+//    slow.next = slow.next?.next
+//    return head
+//
+//
+//}

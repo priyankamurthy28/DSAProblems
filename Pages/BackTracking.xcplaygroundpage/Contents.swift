@@ -112,3 +112,7 @@ let board: [[Character]] = [
 let word = "CAT"
 
 wordSearch(board: board, word: word)
+
+
+
+

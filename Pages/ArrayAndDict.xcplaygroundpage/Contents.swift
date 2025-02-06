@@ -192,30 +192,31 @@ FrequencyofRepatedCharcatersInArray(inputArray: ["man", "movea", "morea"])
 
 
 func groupAnagrams(_ inputString: [String]) -> [[String]] {
-    var resultAnangrams = [String: [String]]()
+    var resultAnagrams = [String: [String]]()
     
     
     for str in inputString {
-    
         var count = [Int](repeating: 0, count: 26)
         
         for char in str {
             
             let index = Int(char.asciiValue! - Character("a").asciiValue!)
-                count[index] += 1
+            count[index] += 1
         }
         
-        let key = count.map { String($0) }.joined(separator: ",")
+        var key = count.map{String($0)}.joined(separator: "")
         
-        if resultAnangrams[key] == nil {
-            resultAnangrams[key] = [str]
-            
-        }
-        resultAnangrams[key]?.append(str)
-        
+        if resultAnagrams[key] == nil {
+            resultAnagrams[key] = [str]
+        } else {
+            resultAnagrams[key]?.append(str)
         }
         
-    return Array(resultAnangrams.values)
+        
+    }
+    
+    return Array(resultAnagrams.values)
+    
         
   }
 

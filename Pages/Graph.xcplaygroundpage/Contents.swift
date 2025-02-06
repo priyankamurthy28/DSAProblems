@@ -317,3 +317,60 @@ numberOfIslands(grid: [
 ["1", "1", "0", "0", "1"]
 ])
 
+
+//547. Number of Provinces
+//Medium
+//Topics
+//Companies
+//There are n cities. Some of them are connected, while some are not. If city a is connected directly with city b, and city b is connected directly with city c, then city a is connected indirectly with city c.
+//
+//A province is a group of directly or indirectly connected cities and no other cities outside of the group.
+//
+//You are given an n x n matrix isConnected where isConnected[i][j] = 1 if the ith city and the jth city are directly connected, and isConnected[i][j] = 0 otherwise.
+//
+//Return the total number of provinces.
+
+//tc 0(n) + 0(V + 2E)
+// sc 0(n) 
+
+func numberOfProvince(_ numbers: [[Int]]) -> Int {
+    var V = numbers.count
+    var adjList = [[Int]](repeating: [], count: V)
+    var vistedArray = [Bool](repeating: false, count: V)
+    var count = 0
+    
+    for i in 0..<V {
+        for j in 0..<V {
+            
+            if numbers[i][j] == 1 && i != j {
+                adjList[i].append(j)
+                adjList[j].append(i)
+            }
+        }
+    }
+    
+    for i in 0..<V {
+        if !vistedArray[i] {
+            count += 1
+            dfs(i, adjList, &vistedArray)
+            
+        }
+        
+    }
+    
+    func dfs(_ node: Int, _ adjList:   [[Int]], _ visted: inout [Bool]) {
+        visted[node] = true
+        for neighbour in adjList[node] {
+            
+            if !visted[neighbour] {
+                dfs(neighbour, adjList, &visted)
+            }
+            
+        }
+        
+    }
+    return count
+}
+
+var isConnected = [[1,1,0],[1,1,0],[0,0,1]]
+numberOfProvince(isConnected)

@@ -166,3 +166,80 @@ threeSum1([-1, 0, 1, 2, -1, -4])
 //Output: [[-1,-1,2],[-1,0,1]]
 
 
+
+// 0(n) and sc 0(1) 
+func findMaxArea(_ heights: [Int]) -> Int {
+    var maxArea = 0
+    var left = 0
+    var right = heights.count - 1
+    
+    while(left < right) {
+        var width = right - left
+        var height = min(heights[left], heights[right])
+        var area = width * height
+        
+        maxArea = max(area, maxArea)
+        
+        if heights[left] < heights[right] {
+            left += 1
+             
+        } else {
+            right -= 1
+        }
+        
+        
+        
+    }
+    
+    return maxArea
+    
+}
+findMaxArea([1,7,2,5,4,7,3,6])
+
+
+//tc O(nlogn) + o(n^2) but overall 0(n^2)
+//tc  0(n^2) and sc 0(n)
+func findThreeSum(_ array: [Int]) -> [[Int]] {
+    
+   var result = [[Int]]()
+    var nums = array.sorted()
+    
+    for i in 0..<nums.count {
+        
+        if i > 0 && nums[i] == nums[i - 1] {
+            continue
+        }
+        var left = i + 1
+        var right = nums.count - 1
+        
+        while(left < right) {
+            
+            var sum = nums[i] + nums[right] + nums[left]
+            
+            if sum == 0 {
+                result.append([nums[i],nums[left], nums[right]])
+                
+                while(left < right && nums[left] == nums[left + 1]) {
+                    left += 1
+                }
+                while(left < right && nums[right] == nums[right - 1]) {
+                    right -= 1
+                }
+                left += 1
+                right -= 1
+            }
+            else if sum > 0 {
+                left += 1
+            } else {
+                right -= 1
+            }
+            
+            
+            
+        }
+    }
+    
+    return result
+}
+
+findThreeSum([-1, 0, 1, 2, -1, -4])

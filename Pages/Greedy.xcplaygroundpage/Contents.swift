@@ -34,7 +34,10 @@ func AssignCookie(_ greed: [Int], _ s: [Int]) -> Int {
     // tc is O(nlogn+mlogm)
 // sc O(1) (or 0(n + m)
 AssignCookie([1,2,3], [1, 1])
+
+
 //o/p is 1
+    
 
 //let g = [10, 9, 8, 7]
 //let s = [5, 6, 7, 8]
