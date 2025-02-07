@@ -374,3 +374,162 @@ func numberOfProvince(_ numbers: [[Int]]) -> Int {
 
 var isConnected = [[1,1,0],[1,1,0],[0,0,1]]
 numberOfProvince(isConnected)
+
+
+//Flood Fill Algorithm - Graphs
+//
+//
+//Problem Statement: An image is represented by a 2-D array of integers, each integer representing the pixel value of the image. Given a coordinate (sr, sc) representing the starting pixel (row and column) of the flood fill, and a pixel value newColor, "flood fill" the image.
+//
+//To perform a "flood fill", consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same colour as the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same colour as the starting pixel), and so on. Replace the colour of all of the aforementioned pixels with the newColor.
+
+    // Pre-req: Connected Components, Graph traversal techniques
+
+//Input: [[1 1 1], [2 2 0], [2 2 2]]
+//
+//sr = 2, sc = 0, newColor = 3
+//
+//Output: = [[1 1 1][3 3 0][3 3 3]]
+
+
+//tc 0(n * m)
+//sc 0(n * m ) + 0(n * m)
+func floodFill(_ image: [[Int]], _ sr: Int, _ sc: Int, _ color: Int) -> [[Int]] {
+    
+    var mutableImage = image
+    var rows = mutableImage.count
+    var cols = mutableImage[0].count
+    let originalColor = mutableImage[sr][sc]
+
+    if originalColor == color {
+                return mutableImage
+            }
+    
+        dfs(sr, sc)
+        
+        func dfs(_ row: Int, _ col: Int) {
+            
+            if row < 0 || col < 0 || row >= rows || col >= cols || mutableImage[sr][sc] != originalColor {
+                return
+            }
+            
+            mutableImage[row][col] = color
+
+                   dfs(row - 1, col) // Up
+                   dfs(row + 1, col) // Down
+                   dfs(row, col - 1) // Left
+                   dfs(row, col + 1) // Right
+            
+        }
+        
+        
+    
+    return mutableImage
+}
+
+floodFill([[1,1,1],[1,1,0],[1,0,1]], 1, 1, 2)
+
+
+
+//Dijkstra’s Algorithm - Using Priority Queue
+// Priority Queue implementation
+struct PriorityQueue<T> {
+    private var heap: [T] = []
+    private let sort: (T, T) -> Bool
+    
+    init(sort: @escaping (T, T) -> Bool) {
+        self.sort = sort
+    }
+    
+    var isEmpty: Bool { heap.isEmpty }
+    
+    mutating func enqueue(_ element: T) {
+        heap.append(element)
+        heapifyUp(heap.count - 1)
+    }
+    
+    mutating func dequeue() -> T? {
+        guard !heap.isEmpty else { return nil }
+        heap.swapAt(0, heap.count - 1)
+        let element = heap.removeLast()
+        heapifyDown(0)
+        return element
+    }
+    
+    private mutating func heapifyUp(_ index: Int) {
+        var child = index
+        var parent = (child - 1) / 2
+        while child > 0 && sort(heap[child], heap[parent]) {
+            heap.swapAt(child, parent)
+            child = parent
+            parent = (child - 1) / 2
+        }
+    }
+    
+    private mutating func heapifyDown(_ index: Int) {
+        var parent = index
+        while true {
+            let left = 2 * parent + 1
+            let right = 2 * parent + 2
+            var candidate = parent
+            if left < heap.count && sort(heap[left], heap[candidate]) {
+                candidate = left
+            }
+            if right < heap.count && sort(heap[right], heap[candidate]) {
+                candidate = right
+            }
+            if candidate == parent { return }
+            heap.swapAt(parent, candidate)
+            parent = candidate
+        }
+    }
+}
+
+
+func dijkstra(_ V: Int, _ adj: [[[Int]]], _ S: Int) -> [Int] {
+    
+    var pq = PriorityQueue<(Int, Int)>(sort: {($0.0 < $1.0)})
+    var disTo = [Int](repeating: Int.max, count: V)
+    
+    disTo[S] = 0
+    
+    pq.enqueue((0, S))
+    
+    while !pq.isEmpty {
+        
+        let (dis, node) = pq.dequeue()!
+        
+        for edge in adj[node] {
+            
+            let v = edge[0]
+            let w = edge[1]
+            
+            
+            if dis + w < disTo[v] {
+                disTo[v] = dis + w
+                pq.enqueue((disTo[v], v))
+                
+            }
+            
+        }
+    }
+    
+    
+    return disTo
+}
+
+
+
+
+
+
+let V = 3, S = 2
+let adj: [[[Int]]] = [
+    [[1, 1], [2, 6]], // Edges from node 0
+    [[2, 3], [0, 1]], // Edges from node 1
+    [[1, 3], [0, 6]]  // Edges from node 2
+]
+
+
+let result = dijkstra(V, adj, S)
+print(result)
