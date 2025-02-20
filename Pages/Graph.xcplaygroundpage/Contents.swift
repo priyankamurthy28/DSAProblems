@@ -485,7 +485,9 @@ struct PriorityQueue<T> {
     }
 }
 
-
+//Time Complexity: O( E log(V) ), Where E = Number of edges and V = Number of Nodes for dijkstra
+//
+//Space Complexity: O( |E| + |V| ), Where E = Number of edges and V = Number of Nodes.
 func dijkstra(_ V: Int, _ adj: [[[Int]]], _ S: Int) -> [Int] {
     
     var pq = PriorityQueue<(Int, Int)>(sort: {($0.0 < $1.0)})
@@ -533,3 +535,178 @@ let adj: [[[Int]]] = [
 
 let result = dijkstra(V, adj, S)
 print(result)
+
+
+
+func shortestPAth(_ n: Int, _ edges: [[Int]]) -> [Int] {
+    
+    var adjList = [[(Int, Int)]](repeating: [], count: n + 1)
+    
+    for edge in edges {
+        
+        let u = edge[0], v = edge[1], w = edge[2]
+        adjList[u].append((v, w))
+        adjList[v].append((u, w))
+        
+    }
+
+    var pq = PriorityQueue<(Int, Int)>(sort: {($0.0 < $1.0)})
+    var disTo = [Int](repeating: Int.max, count: n + 1)
+    var parent = [Int](repeating: 0, count: n + 1)
+    
+    for i in 1...n {
+        parent[i] = i
+    }
+    
+    disTo[1] = 0
+    
+    
+    pq.enqueue((0, 1))
+    
+    while !pq.isEmpty {
+        
+        
+        let (dis, node) = pq.dequeue()!
+        
+        for edge in adjList[node] {
+            
+            let v = edge.0
+            let w = edge.1
+            
+            if dis + w < disTo[v] {
+                disTo[v] = dis + w
+                pq.enqueue((disTo[v], v))
+                parent[v] = node
+                
+            }
+        }
+    }
+        
+        if disTo[n] == Int.max {
+                   return [-1]
+               }
+
+        
+    var path = [Int]()
+        var current = n
+        
+        while(parent[current] != current) {
+            
+            path.append(current)
+            current = parent[current]
+        }
+        path.append(1)
+    
+    return path.reversed()
+    }
+ 
+    
+
+let n = 5, edges = [[1, 2, 2], [2, 5, 5], [2, 3, 4], [1, 4, 1], [4, 3, 3], [3, 5, 1]]
+let path = shortestPAth(n, edges)
+print(path)
+
+
+//clone graph
+//given a reference of a node in a connected undirected graph.
+//
+//Return a deep copy (clone) of the graph.
+//
+//Each node in the graph contains a value (int) and a list (List[Node]) of its neighbors.
+//
+//class Node {
+//    public int val;
+//    public List<Node> neighbors;
+//}
+//
+
+//TC and SC
+// 0(V + E) //
+
+class Node {
+    var value: Int
+    var neighbour: [Node] // No need for optionals
+
+    init(_ value: Int) {
+        self.value = value
+        self.neighbour = []
+    }
+}
+
+func cloneGraph(_ node: Node?) -> Node? {
+    var visited = [Int: Node]() // Correct spelling
+
+    guard let node = node else {
+        return nil
+    }
+
+    func dfs(_ oldNode: Node) -> Node {
+        if let clonedNode = visited[oldNode.value] { // Correct key
+            return clonedNode
+        }
+
+        let newNode = Node(oldNode.value)
+        visited[oldNode.value] = newNode
+
+        for neighbor in oldNode.neighbour {
+            newNode.neighbour.append(dfs(neighbor))
+        }
+
+        return newNode
+    }
+
+    return dfs(node)
+}
+
+func createGraph(_ adjList: [[Int]]) -> Node? {
+    guard !adjList.isEmpty else { return nil }
+
+    var nodes = [Int: Node]()
+
+    // Create Nodes (1-based index)
+    for i in 0..<adjList.count {
+        nodes[i + 1] = Node(i + 1)
+    }
+
+    // Connect Nodes
+    for i in 0..<adjList.count {
+        if let currentNode = nodes[i + 1] {
+            currentNode.neighbour = adjList[i].compactMap { nodes[$0] }
+        }
+    }
+    
+    return nodes[1]
+}
+
+func printGraph(_ node: Node?) {
+    guard let node = node else { return }
+
+    var visited = Set<Int>()
+    var queue: [Node] = [node]
+
+    while !queue.isEmpty {
+        let current = queue.removeFirst()
+        if visited.contains(current.value) { continue }
+
+        visited.insert(current.value)
+        print("Node \(current.value) ->", current.neighbour.map { $0.value })
+
+        for neighbor in current.neighbour {
+            if !visited.contains(neighbor.value) {
+                queue.append(neighbor)
+            }
+        }
+    }
+}
+
+let adjList = [[2, 4], [1, 3], [2, 4], [1, 3]]
+
+if let originalGraph = createGraph(adjList) {
+    print("Original Graph:")
+    printGraph(originalGraph)
+
+    if let clonedGraph = cloneGraph(originalGraph) {
+        print("\nCloned Graph:")
+        printGraph(clonedGraph)
+    }
+}

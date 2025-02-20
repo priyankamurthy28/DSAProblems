@@ -12,5 +12,6 @@
         <page name='Greedy'/>
         <page name='DP'/>
         <page name='LeetcodeDaily'/>
+        <page name='Trees'/>
     </pages>
 </playground>
