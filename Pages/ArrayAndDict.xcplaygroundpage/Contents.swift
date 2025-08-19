@@ -195,7 +195,9 @@ FrequencyofRepatedCharcatersInArray(inputArray: ["man", "movea", "morea"])
 
 func groupAnagrams(_ inputString: [String]) -> [[String]] {
     var resultAnagrams = [String: [String]]()
-    
+//     All capital letters A–Z are 65–90.
+
+// All small letters a–z are 97–122.
     
     for str in inputString {
         var count = [Int](repeating: 0, count: 26)
