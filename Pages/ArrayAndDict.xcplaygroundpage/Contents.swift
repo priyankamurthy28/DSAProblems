@@ -147,6 +147,8 @@ func FrequencyofRepatedCharcatersInArray(inputArray: [String]) -> [Character]? {
     var dict1 = [Character: Int]()
     var dict2 = [Character: Int]()
     var dict3 = [Character: Int]()
+
+    var resultArray = [Character]()
     
     
     for char in str1 {
@@ -180,11 +182,11 @@ func FrequencyofRepatedCharcatersInArray(inputArray: [String]) -> [Character]? {
     for char in dict1.keys {
         
         if dict2[char] != nil && dict3[char] != nil {
-            return [char]
+             resultArray.append[char]
         }
         
     }
-    return nil
+    return resultArray
 }
 
 
