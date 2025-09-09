@@ -303,6 +303,25 @@ func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> 
     }
 }
 
-    
+    public class TreeNode {
+    public var val: Int
+    public var left: TreeNode?
+    public var right: TreeNode?
+    public init(_ val: Int) { self.val = val }
+}
+
+//ISValidBST 
+
+    func isValidBST(_ root: TreeNode?) -> Bool {
+        return solve(root, minVal: Int.min, maxVal: Int.max)
+    }
+
+    private func solve(_ node: TreeNode?, minVal: Int, maxVal: Int) -> Bool {
+        guard let node = node else { return true }
+        if node.val <= minVal || node.val >= maxVal { return false }
+        return solve(node.left,  minVal: minVal,    maxVal: node.val) &&
+               solve(node.right, minVal: node.val, maxVal: maxVal)
+    }
+
 
 
