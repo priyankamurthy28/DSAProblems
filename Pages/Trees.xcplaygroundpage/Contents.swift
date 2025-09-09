@@ -281,6 +281,8 @@ func isSubTree(root: Node?, subRoot: Node?) -> Bool {
 isSubTree(root: root, subRoot: root)
 
 
+// https://takeuforward.org/data-structure/lowest-common-ancestor-for-two-given-nodes/ - refer this while solving
+
 func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> TreeNode? {
         guard let root = root else {
             return nil
